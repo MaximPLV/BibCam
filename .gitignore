@@ -1,0 +1,13 @@
+/.idea/
+# Compiled class files
+*.class
+
+# Package files
+*.jar
+*.war
+*.ear
+
+# Maven directory
+/target/
+
+/config.properties
