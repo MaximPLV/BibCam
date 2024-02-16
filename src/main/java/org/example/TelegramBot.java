@@ -13,17 +13,30 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-import java.io.File;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 public class TelegramBot extends TelegramLongPollingBot {
 
+    private static final String botToken;
+    private static final String chatId;
+
+    static {
+        Properties prop = new Properties();
+        try (InputStream input = new FileInputStream("config.properties")){
+            prop.load(input);
+            botToken = prop.getProperty("botToken");
+            chatId = prop.getProperty("chatId");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
     private final List<Integer> messages;
-    private static final String chatId = "5594583255";
     private volatile boolean systemReady = false;
     public TelegramBot() {
-        super("6537723548:AAGaA2uywvpZd37M8Hhq4dbHBBbkyHueND8");
+        super(botToken);
         messages = new ArrayList<>();
     }
 
@@ -42,7 +55,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                 message.setText("System stopped");
             } else {
                 messages.add(update.getMessage().getMessageId());
-                message.setText(update.getMessage().getChatId().toString());
+                message.setText(update.getMessage().getChatId().toString()); //default message text: chatID
             }
             try {
                 execute(message); // Call method to send the message
@@ -61,7 +74,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         // Create send method
         SendPhoto sendPhotoRequest = new SendPhoto();
         // Set destination chat id
-        sendPhotoRequest.setChatId("5594583255");
+        sendPhotoRequest.setChatId(chatId);
         // Set the photo file as a new photo (You can also use InputStream with a constructor overload)
         sendPhotoRequest.setPhoto(new InputFile(new File(filePath)));
         try {
