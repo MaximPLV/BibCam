@@ -10,4 +10,4 @@
 # Maven directory
 /target/
 
-/config.properties
+/telegramBot.properties
