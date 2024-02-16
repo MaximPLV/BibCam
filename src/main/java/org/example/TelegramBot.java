@@ -25,7 +25,7 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     static {
         Properties prop = new Properties();
-        try (InputStream input = new FileInputStream("config.properties")){
+        try (InputStream input = new FileInputStream("telegramBot.properties")){
             prop.load(input);
             botToken = prop.getProperty("botToken");
             chatId = prop.getProperty("chatId");
