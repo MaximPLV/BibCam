@@ -24,10 +24,12 @@ import java.util.Arrays;
 
 public class CameraAccess {
 
+
+
     static {
         try {
             // Directly load the OpenCV native library
-            System.load("C:\\Users\\maxim\\Downloads\\opencv\\build\\java\\x64\\opencv_java490.dll"); // Replace with the actual path
+            System.load(System.getProperty("user.dir") + "\\src\\main\\resources\\opencv_java490.dll"); // Replace with the actual path
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -16,11 +16,9 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.opencv</groupId>
+            <groupId>org.bytedeco</groupId>
             <artifactId>opencv</artifactId>
-            <version>4.9.0</version>
-            <scope>system</scope>
-            <systemPath>C:\Users\maxim\Downloads\opencv\build\java\opencv-490.jar</systemPath>
+            <version>4.9.0-1.5.10</version>
         </dependency>
 
         <dependency>
