@@ -5,3 +5,4 @@
 5. run the programm
 6. send "ok" to enable the motion detection
 7. send "stop" to stop it
+8. maybe comment out line 97-103 in the CameraAccess class
