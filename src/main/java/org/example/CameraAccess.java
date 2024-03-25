@@ -30,7 +30,7 @@ public class CameraAccess {
     public static void main(String[] args) {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
 
-        JFrame frame = createJFrame();
+        JFrame jFrame = createJFrame();
 
         TelegramBot bot = new TelegramBot();
         try {
@@ -82,15 +82,15 @@ public class CameraAccess {
                         if (!prevFrame.empty() && !MyMat.compare(blurredCurrentFrame, prevFrame)) {
                             motionDetected = true;
 
-                            if (!frame.isVisible()) {
-                                frame.setVisible(true);
+                            if (!jFrame.isVisible()) {
+                                jFrame.setVisible(true);
                             }
                         }
                     }
 
                     if (motionDetected) {
                         color = color.equals(Color.BLUE) ? Color.RED : Color.BLUE;
-                        frame.getContentPane().setBackground(color);
+                        jFrame.getContentPane().setBackground(color);
 
                         writer.write(currentFrame);
 
@@ -118,7 +118,7 @@ public class CameraAccess {
                     prevFrame = blurredCurrentFrame.clone();
                     loopCounter++;
                 } else {
-                    frame.setVisible(false);
+                    jFrame.setVisible(false);
                 }
             } else {
                 throw new RuntimeException("Camera is not accessible!");
