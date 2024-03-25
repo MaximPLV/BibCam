@@ -78,6 +78,7 @@ public class TelegramBot extends TelegramLongPollingBot {
             e.printStackTrace();
         }
     }
+
     public void sendVideo() {
         SendVideo sendVideo = new SendVideo();
         sendVideo.setChatId(chatId);
