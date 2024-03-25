@@ -42,8 +42,7 @@ public class CameraAccess {
         VideoCapture camera = new VideoCapture(0); //0 for default camera
 
         if (!camera.isOpened()) {
-            System.out.println("Error: Camera not accessible");
-            return;
+            throw new RuntimeException("Camera is not accessible!");
         }
 
 
@@ -75,13 +74,16 @@ public class CameraAccess {
 
                 if (bot.isSystemReady()) {
                     Mat blurredCurrentFrame = new Mat();
-                    Imgproc.GaussianBlur(currentFrame, blurredCurrentFrame, new Size(81, 81), 0);
 
-                    if (!motionDetected && !prevFrame.empty() && !MyMat.compare(blurredCurrentFrame, prevFrame)) {
-                        motionDetected = true;
+                    if (!motionDetected) {
+                        Imgproc.GaussianBlur(currentFrame, blurredCurrentFrame, new Size(81, 81), 0);
 
-                        if (!frame.isVisible()) {
-                            frame.setVisible(true);
+                        if (!prevFrame.empty() && !MyMat.compare(blurredCurrentFrame, prevFrame)) {
+                            motionDetected = true;
+
+                            if (!frame.isVisible()) {
+                                frame.setVisible(true);
+                            }
                         }
                     }
 
@@ -91,9 +93,12 @@ public class CameraAccess {
 
                         writer.write(currentFrame);
 
+                        //every 90 iterations ~ every 3 seconds
                         if (loopCounter % 90 == 0) {
                             executorService.submit(() -> bot.sendImage(currentFrame));
                         }
+
+                        //every 300 iterations ~ every 10 seconds
                         if (loopCounter % 300 == 0) {
                             executorService.submit(() -> {
                                 writer.release();
@@ -122,7 +127,6 @@ public class CameraAccess {
         camera.release();
         HighGui.destroyAllWindows();
         executorService.shutdown();
-
     }
 
     private static JFrame createJFrame() {
