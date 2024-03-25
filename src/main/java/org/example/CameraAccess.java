@@ -131,23 +131,23 @@ public class CameraAccess {
     }
 
     private static JFrame createJFrame() {
-        JFrame frame = new JFrame("Full Screen Message");
+        JFrame jFrame = new JFrame("Full Screen Message");
 
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLayout(new BorderLayout());
+        jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        jFrame.setLayout(new BorderLayout());
 
-        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        frame.setUndecorated(true);
+        jFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        jFrame.setUndecorated(true);
 
         JLabel label = new JLabel("STOP", SwingConstants.CENTER);
         label.setFont(new Font("Serif", Font.BOLD, 800));
         label.setForeground(Color.WHITE);
 
-        frame.add(label);
+        jFrame.add(label);
 
-        frame.getContentPane().setBackground(Color.RED);
+        jFrame.getContentPane().setBackground(Color.RED);
 
-        return frame;
+        return jFrame;
     }
 }
 
