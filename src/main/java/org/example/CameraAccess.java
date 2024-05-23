@@ -12,6 +12,7 @@ import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -53,10 +54,11 @@ public class CameraAccess {
 
         Mat currentFrame = new Mat();
         Mat prevFrame = new Mat();
-        String filename = "src/main/resources/output.mp4";
+        String filenameTemplate = "src/main/resources/output%s.mp4";
         int fourcc = VideoWriter.fourcc('X', '2', '6', '4'); //X264 codec
         double frameRate = 30;
         Size frameSize = new Size(camera.get(Videoio.CAP_PROP_FRAME_WIDTH), camera.get(Videoio.CAP_PROP_FRAME_HEIGHT));
+        String filename = String.format(filenameTemplate, 0);
         VideoWriter writer = new VideoWriter(filename, fourcc, frameRate, frameSize, true);
 
         boolean motionDetected = false;
@@ -95,15 +97,20 @@ public class CameraAccess {
                         writer.write(currentFrame);
 
                         //every 90 iterations ~ every 3 seconds
-                        if (loopCounter % 90 == 0) {
+                        if (loopCounter % (3 * 30) == 0) {
                             executorService.submit(() -> bot.sendImage(currentFrame));
                         }
 
                         //every 300 iterations ~ every 10 seconds
-                        if (loopCounter % 300 == 0) {
+                        if (loopCounter % (10 * 30) == 0) {
                             writer.release();
+                            String filenameCurrentVid = String.format(filenameTemplate, (loopCounter/300 - 1));
                             executorService.submit(() -> {
-                                bot.sendVideo();
+                                File videoFile = new File(filenameCurrentVid);
+                                videoFile.deleteOnExit();
+                                bot.sendVideo(videoFile);
+                                //noinspection ResultOfMethodCallIgnored
+                                videoFile.delete();
                                 /*ProcessBuilder builder = new ProcessBuilder("rundll32", "user32.dll,LockWorkStation");
                                 builder.inheritIO();
                                 try {
@@ -113,6 +120,8 @@ public class CameraAccess {
                                     e.printStackTrace();
                                 }*/
                             });
+                            String filenameNextVid = String.format(filenameTemplate, (loopCounter/300));
+                            writer.open(filenameNextVid, fourcc, frameRate, frameSize, true);
                         }
                     }
                     prevFrame = blurredCurrentFrame.clone();

@@ -79,10 +79,10 @@ public class TelegramBot extends TelegramLongPollingBot {
         }
     }
 
-    public void sendVideo() {
+    public void sendVideo(File videoFile) {
         SendVideo sendVideo = new SendVideo();
         sendVideo.setChatId(chatId);
-        sendVideo.setVideo(new InputFile(new File("src/main/resources/output.mp4")));
+        sendVideo.setVideo(new InputFile(videoFile));
         try {
             execute(sendVideo);
         } catch (TelegramApiException e) {
