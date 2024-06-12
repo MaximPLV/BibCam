@@ -111,14 +111,7 @@ public class CameraAccess {
                                 bot.sendVideo(videoFile);
                                 //noinspection ResultOfMethodCallIgnored
                                 videoFile.delete();
-                                /*ProcessBuilder builder = new ProcessBuilder("rundll32", "user32.dll,LockWorkStation");
-                                builder.inheritIO();
-                                try {
-                                    System.out.println("cmd");
-                                    builder.start();
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }*/
+                                //lockWorkStation();
                             });
                             String filenameNextVid = String.format(filenameTemplate, (loopCounter/300));
                             writer.open(filenameNextVid, fourcc, frameRate, frameSize, true);
@@ -137,6 +130,17 @@ public class CameraAccess {
         camera.release();
         HighGui.destroyAllWindows();
         executorService.shutdown();
+    }
+
+    private static void lockWorkStation() {
+        ProcessBuilder builder = new ProcessBuilder("rundll32", "user32.dll,LockWorkStation");
+        builder.inheritIO();
+        try {
+            System.out.println("cmd");
+            builder.start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private static JFrame createJFrame() {
